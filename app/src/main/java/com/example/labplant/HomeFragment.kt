@@ -24,9 +24,9 @@ class HomeFragment : Fragment() {
 
         val view: View = inflater.inflate(R.layout.fragment_home, container, false)
 
-        view.mod.setOnClickListener(){
+        /*view.mod.setOnClickListener(){
             view.mod.setBackgroundColor(Color.parseColor("#387002"))
-        }
+        }*/
         return view
     }
 

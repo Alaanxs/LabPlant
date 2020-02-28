@@ -7,7 +7,10 @@
     tools:context=".MainActivity"
     android:background="@color/colorPrimary">
 
-    <include layout="@layout/fragment_home"/>
+    <include
+        layout="@layout/fragment_home"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
     
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -19,17 +22,18 @@
             android:id="@+id/bottomBar"
             android:layout_gravity="bottom"
             app:backgroundTint="@color/white"
-            app:fabAlignmentMode="center"
+            app:fabAlignmentMode="end"
             app:fabCradleRoundedCornerRadius="16dp"
             app:navigationIcon="@drawable/ic_add_circle_outline_black_24dp"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fabSize="normal"
             android:id="@+id/fabBottomBar"
-            app:layout_anchor="@id/bottomBar"
-            android:src="@drawable/ic_home_black_24dp"/>
+            android:src="@drawable/ic_home_black_24dp"
+            android:backgroundTint="@color/white"
+            app:fabSize="normal"
+            app:layout_anchor="@id/bottomBar" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -39,14 +43,6 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/menu_interfaz" />
-
-    <FrameLayout
-        android:id="@+id/FrameLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_above="@id/bottomNavigationView">
-
-    </FrameLayout>-->
+        app:menu="@menu/menu_interfaz" />-->
 
 </RelativeLayout>
