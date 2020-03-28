@@ -5,15 +5,16 @@ import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
 import android.content.Context
 import android.os.AsyncTask
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.widget.ProgressBar
-import androidx.fragment.app.FragmentTransaction
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_settings.*
 import java.io.IOException
 import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,7 +35,8 @@ class MainActivity : AppCompatActivity() {
         ConnectToDevice(this).execute()
 
         btHume.setOnClickListener{ sendCommand("a") }
-        btTime.setOnClickListener{ sendCommand("b") }
+        btTime.setOnClickListener{ readData() }
+
     }
 
      private fun sendCommand(input:String){
@@ -44,6 +46,19 @@ class MainActivity : AppCompatActivity() {
             } catch(e: IOException) {
                 e.printStackTrace()
             }
+        }
+    }
+
+    open class Handler
+
+    private fun readData(){
+        val byteCount: Int = m_bluetoothSocket!!.inputStream.available()
+        if (byteCount > 0) {
+            val rawBytes = ByteArray(byteCount)
+            m_bluetoothSocket!!.inputStream.read(rawBytes)
+            val string = String(rawBytes)
+            Log.i("ASD", string)
+            tvhumedad.text = string
         }
     }
 
