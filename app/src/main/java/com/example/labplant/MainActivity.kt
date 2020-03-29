@@ -7,6 +7,7 @@ import android.content.Context
 import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Handler
+import android.os.Message
 import android.util.Log
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
@@ -25,6 +26,9 @@ class MainActivity : AppCompatActivity() {
         lateinit var m_bluetoothAdapter: BluetoothAdapter
         var m_isConnected: Boolean = false
         lateinit var m_address: String
+        const val handlerState:Int = 0
+        private val recDataString:StringBuilder = StringBuilder()
+        var h: Handler? = null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,31 +38,41 @@ class MainActivity : AppCompatActivity() {
         Log.i("mac2", m_address)
         ConnectToDevice(this).execute()
 
-        btHume.setOnClickListener{ sendCommand("a") }
-        btTime.setOnClickListener{ readData() }
+        h= object : Handler(){
+            override fun handleMessage(msg: Message) {
+                    if (msg.what == handlerState) {
+                        val readMessage:String = msg.obj.toString()
+                        Log.i("Data1 = ", readMessage)
+                        val endOfLineIndex: Int = readMessage.indexOf("~")
+                        if (endOfLineIndex > 0) {
+                            var dataInPrint: String = readMessage.substring(0, endOfLineIndex)
+                            Log.i("Data Received = ", dataInPrint)
+                            var dataLength: Int = dataInPrint.length
+                            if (readMessage[0] == '#'){
+                                val sensor0:String = readMessage.substring(1, 3)
+                                val sensor1:String = readMessage.substring(7, 9)
+                                val sensor2:String = readMessage.substring(13, 15)
+                                tvPHumedadS.text = sensor2 + "%"
+                                tvPHumedad.text = sensor0 + "%"
+                                tvCelcius.text = sensor1 + "°C"
+                            }
+                        }
+                    }
+            }
+        }
 
+        tvROn.setOnClickListener{ sendCommand("a") }
+        btTime.setOnClickListener{ sendCommand("b") }
     }
 
      private fun sendCommand(input:String){
+         val msgBuffer: ByteArray = input.toByteArray()
         if (m_bluetoothSocket != null) {
             try{
-                m_bluetoothSocket!!.outputStream.write(input.toByteArray())
+                m_bluetoothSocket!!.outputStream.write(msgBuffer)
             } catch(e: IOException) {
                 e.printStackTrace()
             }
-        }
-    }
-
-    open class Handler
-
-    private fun readData(){
-        val byteCount: Int = m_bluetoothSocket!!.inputStream.available()
-        if (byteCount > 0) {
-            val rawBytes = ByteArray(byteCount)
-            m_bluetoothSocket!!.inputStream.read(rawBytes)
-            val string = String(rawBytes)
-            Log.i("ASD", string)
-            tvhumedad.text = string
         }
     }
 
@@ -96,12 +110,29 @@ class MainActivity : AppCompatActivity() {
                     m_bluetoothSocket = device.createInsecureRfcommSocketToServiceRecord(m_myUUID)
                     BluetoothAdapter.getDefaultAdapter().cancelDiscovery()
                     m_bluetoothSocket!!.connect()
+                    readData()
                 }
             } catch (e: IOException){
                 connectSucces = false
                 e.printStackTrace()
             }
             return null
+        }
+
+        private fun readData() {
+            val buffer = ByteArray(256)
+            var bytes: Int
+
+            while (true){
+                try {
+                    bytes = m_bluetoothSocket!!.inputStream.read(buffer)
+                    val readMessage = String(buffer, 0, bytes)
+                    h?.obtainMessage(handlerState, bytes, -1, readMessage)!!.sendToTarget()
+                    //Log.i("ASD", readMessage)
+                } catch (e: IOException) {
+                    Log.i("RD", "ERROR!")
+                }
+            }
         }
 
         override fun onPostExecute(result: String?) {

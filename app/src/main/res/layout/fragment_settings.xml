@@ -46,7 +46,7 @@
                 app:backgroundTint="#FFFFFF" />
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/tvROn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
