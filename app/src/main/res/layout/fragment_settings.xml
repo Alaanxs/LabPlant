@@ -18,7 +18,8 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Riego" />
+                android:text="Riego"
+                android:textSize="16sp" />
         </TableRow>
 
         <TableRow
@@ -32,7 +33,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
-                android:text="Humedad"
+                android:text="@string/bt_humedad"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="#000000"
                 app:backgroundTint="#FFFFFF" />
 
@@ -41,7 +43,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Tiempo"
+                android:text="@string/bt_tiempo"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="#000000"
                 app:backgroundTint="#FFFFFF" />
 
@@ -51,7 +54,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
-                android:text="Encender"
+                android:text="@string/bt_encender"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="#000000"
                 app:backgroundTint="#FFFFFF" />
         </TableRow>
@@ -64,7 +68,9 @@
                 android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Luz" />
+                android:text="Luz"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textSize="16sp" />
         </TableRow>
 
         <TableRow
@@ -73,21 +79,23 @@
             android:layout_weight="1">
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/btLuzOn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
-                android:text="On"
+                android:text="@string/bt_encender"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="#000000"
                 app:backgroundTint="#FFFFFF" />
 
             <Button
-                android:id="@+id/button5"
+                android:id="@+id/btLuzOff"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Off"
+                android:text="@string/bt_apagar"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="#000000"
                 app:backgroundTint="#FFFFFF" />
 
@@ -97,7 +105,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
-                android:text="Tiempo"
+                android:text="@string/bt_tiempo"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="#000000"
                 app:backgroundTint="#FFFFFF" />
         </TableRow>
@@ -110,7 +119,8 @@
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ventilación" />
+                android:text="Ventilación"
+                android:textSize="16sp" />
         </TableRow>
 
         <TableRow
@@ -119,21 +129,23 @@
             android:layout_weight="1">
 
             <Button
-                android:id="@+id/button10"
+                android:id="@+id/btVentiOn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
-                android:text="On"
+                android:text="@string/bt_encender"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="#000000"
                 app:backgroundTint="#FFFFFF" />
 
             <Button
-                android:id="@+id/button11"
+                android:id="@+id/btVentiOff"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Apagado"
+                android:text="@string/bt_apagar"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="#000000"
                 app:backgroundTint="#FFFFFF" />
 
@@ -143,7 +155,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
-                android:text="Tiempo"
+                android:text="@string/bt_tiempo"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="#000000"
                 app:backgroundTint="#FFFFFF" />
         </TableRow>

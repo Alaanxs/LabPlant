@@ -1,7 +1,16 @@
 <resources>
     <string name="app_name">LabPlant</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="titulo_temperatura">Temperatura</string>
+
+    //fragment_home
+    <string name="title_temperatura">temperatura</string>
+    <string name="title_humedad_suelo">humedad suelo</string>
+    <string name="title_humedad">humedad</string>
+
+    //fragment_settings
+    <string name="bt_humedad">HUMEDAD</string>
+    <string name="bt_tiempo">TIEMPO</string>
+    <string name="bt_encender">PRENDER</string>
+    <string name="bt_apagar">APAGAR</string>
 </resources>

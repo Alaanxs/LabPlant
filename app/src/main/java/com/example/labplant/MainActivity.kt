@@ -10,6 +10,7 @@ import android.os.Handler
 import android.os.Message
 import android.util.Log
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_settings.*
@@ -22,13 +23,13 @@ class MainActivity : AppCompatActivity() {
     companion object{
         var m_myUUID: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
         var m_bluetoothSocket: BluetoothSocket? = null
-        lateinit var m_progress: ProgressBar
         lateinit var m_bluetoothAdapter: BluetoothAdapter
         var m_isConnected: Boolean = false
         lateinit var m_address: String
         const val handlerState:Int = 0
-        private val recDataString:StringBuilder = StringBuilder()
         var h: Handler? = null
+        var stateRelay: String = "null"
+        var stateRelay1: String = "null"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,26 +44,64 @@ class MainActivity : AppCompatActivity() {
                     if (msg.what == handlerState) {
                         val readMessage:String = msg.obj.toString()
                         Log.i("Data1 = ", readMessage)
-                        val endOfLineIndex: Int = readMessage.indexOf("~")
-                        if (endOfLineIndex > 0) {
-                            var dataInPrint: String = readMessage.substring(0, endOfLineIndex)
+
+                        val endOfSensors: Int = readMessage.indexOf("~")
+                        val endOfStateRelay: Int = readMessage.indexOf("-")
+
+                        if(endOfStateRelay > 0){
+                            val dataRelay: Int = readMessage.indexOf("E")
+                            var dataPrint: String = readMessage.substring(dataRelay, endOfStateRelay)
+                            if (dataPrint[0] == 'E'){
+                                stateRelay = dataPrint.substring(1,2)
+                                stateRelay1 = dataPrint.substring(3,4)
+                                Log.i("Data2 = ", stateRelay1)
+                                when {
+                                    stateRelay == "a" -> tvROn.text = "APAGAR"
+                                    stateRelay == "b" -> tvROn.text = "PRENDER"
+                                    else -> Toast.makeText(this@MainActivity, "Los datos del riego son incorrectos", Toast.LENGTH_LONG).show()
+                                }
+                                when {
+                                    stateRelay1 == "a" ->{
+                                        btLuzOff.isEnabled = true
+                                        btLuzOn.isEnabled = false
+                                    }
+                                    stateRelay1 == "b" ->{
+                                        btLuzOn.isEnabled = true
+                                        btLuzOff.isEnabled = false
+                                    }
+                                    else -> Toast.makeText(this@MainActivity, "Los datos del riego son incorrectos", Toast.LENGTH_LONG).show()
+                                }
+                            }
+                        }
+
+                        if (endOfSensors > 0) {
+                            var dataInPrint: String = readMessage.substring(0, endOfSensors)
                             Log.i("Data Received = ", dataInPrint)
-                            var dataLength: Int = dataInPrint.length
                             if (readMessage[0] == '#'){
                                 val sensor0:String = readMessage.substring(1, 3)
                                 val sensor1:String = readMessage.substring(7, 9)
                                 val sensor2:String = readMessage.substring(13, 15)
                                 tvPHumedadS.text = sensor2 + "%"
-                                tvPHumedad.text = sensor0 + "%"
-                                tvCelcius.text = sensor1 + "°C"
+                                tvPHumedad.text = sensor1 + "%"
+                                tvCelcius.text = sensor0 + "°C"
                             }
                         }
                     }
             }
         }
 
-        tvROn.setOnClickListener{ sendCommand("a") }
-        btTime.setOnClickListener{ sendCommand("b") }
+        tvROn.setOnClickListener{
+            if(stateRelay == "a"){
+                sendCommand("b")
+            }
+            else if(stateRelay == "b"){
+                sendCommand("a")
+            }
+        }
+        btLuzOn.setOnClickListener{ sendCommand("c") }
+        btLuzOff.setOnClickListener{ sendCommand("d") }
+        btVentiOn.setOnClickListener{ sendCommand("c") }
+        btVentiOff.setOnClickListener{ sendCommand("d") }
     }
 
      private fun sendCommand(input:String){
@@ -95,11 +134,6 @@ class MainActivity : AppCompatActivity() {
 
         init{
             this.context = c
-        }
-
-        override fun onPreExecute() {
-            super.onPreExecute()
-            //m_progress = ProgressBar.show(context, "Connecting…", "please wait")
         }
 
         override fun doInBackground(vararg params: Void?): String? {
@@ -142,7 +176,6 @@ class MainActivity : AppCompatActivity() {
             } else{
                 m_isConnected = true
             }
-            //m_progress.dismiss()
         }
     }
 }

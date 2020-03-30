@@ -7,6 +7,13 @@
     tools:context=".MainActivity"
     android:background="@color/colorPrimary">
 
+    <ProgressBar
+        android:id="@+id/pbarProgreso"
+        android:indeterminate="true"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"/>
+
     <include
         layout="@layout/fragment_home"
         android:layout_width="match_parent"
