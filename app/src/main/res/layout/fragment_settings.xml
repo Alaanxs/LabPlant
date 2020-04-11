@@ -28,7 +28,7 @@
             android:layout_weight="1">
 
             <Button
-                android:id="@+id/btHume"
+                android:id="@+id/btHumR"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="10dp"
@@ -39,7 +39,7 @@
                 app:backgroundTint="#FFFFFF" />
 
             <Button
-                android:id="@+id/btTime"
+                android:id="@+id/btTimeR"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -49,7 +49,7 @@
                 app:backgroundTint="#FFFFFF" />
 
             <Button
-                android:id="@+id/tvROn"
+                android:id="@+id/btOnR"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
@@ -100,7 +100,7 @@
                 app:backgroundTint="#FFFFFF" />
 
             <Button
-                android:id="@+id/button6"
+                android:id="@+id/btTimeL"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
@@ -150,7 +150,7 @@
                 app:backgroundTint="#FFFFFF" />
 
             <Button
-                android:id="@+id/button12"
+                android:id="@+id/btTimeV"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"

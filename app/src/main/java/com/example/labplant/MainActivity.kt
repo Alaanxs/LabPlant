@@ -4,17 +4,19 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
 import android.content.Context
-import android.os.AsyncTask
-import android.os.Bundle
-import android.os.Handler
-import android.os.Message
+import android.os.*
 import android.util.Log
-import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_settings.*
+import kotlinx.android.synthetic.main.fragment_time.*
+import kotlinx.android.synthetic.main.fragment_time.view.*
 import java.io.IOException
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -30,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         var h: Handler? = null
         var stateRelay: String = "null"
         var stateRelay1: String = "null"
+        var timeFormat = SimpleDateFormat("hh:mm", Locale.US)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,8 +59,8 @@ class MainActivity : AppCompatActivity() {
                                 stateRelay1 = dataPrint.substring(3,4)
                                 Log.i("Data2 = ", stateRelay1)
                                 when {
-                                    stateRelay == "a" -> tvROn.text = "APAGAR"
-                                    stateRelay == "b" -> tvROn.text = "PRENDER"
+                                    stateRelay == "a" -> btOnR.text = "APAGAR"
+                                    stateRelay == "b" -> btOnR.text = "PRENDER"
                                     else -> Toast.makeText(this@MainActivity, "Los datos del riego son incorrectos", Toast.LENGTH_LONG).show()
                                 }
                                 when {
@@ -69,7 +72,7 @@ class MainActivity : AppCompatActivity() {
                                         btLuzOn.isEnabled = true
                                         btLuzOff.isEnabled = false
                                     }
-                                    else -> Toast.makeText(this@MainActivity, "Los datos del riego son incorrectos", Toast.LENGTH_LONG).show()
+                                    else -> Toast.makeText(this@MainActivity, "Los datos de la luz son incorrectos", Toast.LENGTH_LONG).show()
                                 }
                             }
                         }
@@ -90,7 +93,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        tvROn.setOnClickListener{
+        fabBottomBar.setOnClickListener{
+            onBackPressed()
+        }
+
+        btHumR.setOnClickListener{
+            loadFragment(HumidityFragment())
+        }
+        btOnR.setOnClickListener{
             if(stateRelay == "a"){
                 sendCommand("b")
             }
@@ -98,10 +108,17 @@ class MainActivity : AppCompatActivity() {
                 sendCommand("a")
             }
         }
+        btTimeR.setOnClickListener{ loadFragment(TimeFragment())
+            sendCommand("a")
+        }
+
         btLuzOn.setOnClickListener{ sendCommand("c") }
         btLuzOff.setOnClickListener{ sendCommand("d") }
+        btTimeL.setOnClickListener{ loadFragment(TimeFragment()) }
+
         btVentiOn.setOnClickListener{ sendCommand("c") }
         btVentiOff.setOnClickListener{ sendCommand("d") }
+        btTimeV.setOnClickListener{ loadFragment(TimeFragment()) }
     }
 
      private fun sendCommand(input:String){
@@ -113,6 +130,19 @@ class MainActivity : AppCompatActivity() {
                 e.printStackTrace()
             }
         }
+    }
+
+    private fun loadFragment(fragment:Fragment) {
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.fragmentContainer, fragment)
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
+    }
+
+    private fun removeFragment(fragment: Fragment){
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.remove(fragment)
+        fragmentTransaction.commit()
     }
 
     private fun disconnect(){
@@ -177,5 +207,29 @@ class MainActivity : AppCompatActivity() {
                 m_isConnected = true
             }
         }
+    }
+
+    fun obtenerHoraActual(zonaHoraria: String?): String? {
+        val formato = "HH:mm"
+        return obtenerFechaConFormato(formato, zonaHoraria)
+    }
+
+    fun obtenerFechaConFormato(formato: String?, zonaHoraria: String?): String? {
+        val calendar = Calendar.getInstance()
+        val date = calendar.time
+        val sdf: SimpleDateFormat
+        sdf = SimpleDateFormat(formato)
+        sdf.setTimeZone(TimeZone.getTimeZone(zonaHoraria))
+        return sdf.format(date)
+    }
+
+    fun relayTime(){
+        val time = obtenerHoraActual("America/Mexico_City").toString()
+        val hour = time.substring(0,2)
+        val minute = time.substring(3,5)
+
+        /*if (hour==hora && minute==minuto){
+
+        }*/
     }
 }
